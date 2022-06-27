@@ -1,0 +1,156 @@
+/* You can add global styles to this file, and also import other style files */
+.light {
+  overflow: hidden;
+  height: 100vh;
+}
+body{
+  font-size: 12px !important;
+}
+
+.clearfix {
+  clear: both !important;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.displayInline{
+  display: inline !important;
+}
+
+
+.text-align-right{
+  text-align: right;
+}
+
+.capitalize {
+  text-transform: capitalize !important;
+}
+
+.container, .container-fluid, .container-sm, .container-md, .container-lg, .container-xl{
+  height: 80vh;
+}
+
+.page-wrapper .page-body-wrapper .page-header .row {
+  align-items: start;
+}
+.page-wrapper
+
+.card {
+  margin-bottom: 10px !important;
+  height: calc(100vh - 150px);
+  .card-header,
+  .card-body {
+    padding: 10px !important;
+  }
+
+  .card-footer {
+    padding-left: 13px !important;
+    padding-bottom: 13px !important;
+  }
+}
+.page-wrapper .page-body-wrapper footer{
+  margin-left: 0 !important;  
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.table {
+  text-align: center;
+
+  tbody {
+    cursor: pointer;
+  }
+}
+
+.table{ 
+  th{
+    padding: 10px !important;
+  }
+  td {
+    padding: 5px !important;
+  }
+  tbody {
+    display: block;
+    height: calc(100vh - 305px);
+    overflow: auto;
+  }
+  thead, tbody tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;/* even columns width , fix width of table too*/
+  }
+}
+
+button[disabled]:hover,
+input[disabled]:hover,
+a[disabled]:hover {
+  cursor: not-allowed
+}
+
+.mostly-customized-scrollbar::-webkit-scrollbar {
+  width: 7px;
+  height: 8px;
+  background-color: #f1f1f1;
+  /* or add it to the track */
+}
+
+/* Add a thumb */
+.mostly-customized-scrollbar::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+}
+
+.mostly-customized-scrollbar {
+  display: block;
+  overflow-y: auto;
+  height: calc(100vh - 680px); //for 4 camera
+  // height: calc(100vh - 245px); // for 2 camera
+}
+
+@media screen and (max-width: 1660px) {
+  .mostly-customized-scrollbar {
+    height: calc(100vh - 545px); //for 4 camera
+  }
+}
+
+:fullscreen {
+  .mostly-customized-scrollbar {
+    display: block;
+    overflow-y: auto;
+    height: calc(100vh - 735px);
+  }
+
+  @media screen and (max-width: 1660px) {
+    .mostly-customized-scrollbar {
+      height: calc(100vh - 605px); //for 4 camera
+    }
+  }
+}
+
+.nav-pills,
+.nav-tabs {
+  margin-bottom: 10px;
+}
+
+.modal-header {
+  padding: 5px !important;
+
+  h4 {
+    font-size: 18px !important;
+  }
+}
+
+.modal-footer {
+  padding: 5px !important;
+}
+
+.NoDataAvailable{
+  font-weight: 600;
+}
+.rowhighlight{
+  background-color: lightslategrey;  
+}
+.borderRightLine{
+  border-right: 1px solid #000000;
+}

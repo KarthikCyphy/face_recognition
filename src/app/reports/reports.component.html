@@ -1,0 +1,302 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-lg-12 col-xl-12">
+            <div class="card">
+                <div class="card-header card-header-border" style="padding-bottom: 0px !important;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Vehicle Frequency Reports</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 borderRightLine">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label" style="display: initial;">From Date & Time</label>
+                                        <app-date-time-picker [(ngModel)]="fromDate"></app-date-time-picker>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label" style="display: initial;">To Date & Time</label>
+                                        <app-date-time-picker [(ngModel)]="toDate"></app-date-time-picker>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="col-form-label" style="display: initial;">Frequency</label>
+                                        <select class="form-control" [(ngModel)]="selectedFrequency">
+                                            <option value="" disabled>-- Select--</option>
+                                            <option *ngFor="let frequencyList of frequencyLists"
+                                                [ngValue]="frequencyList">{{frequencyList}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 p-t-5 m-t-20">
+                                    <button type="button" (click)="onDateTimeModified()"
+                                        class="btn btn-primary mr-1">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 m-t-20">
+                            <div class="pull-right right-header">
+                                <input type='text' class="filter-ngx form-control" [(ngModel)]="vehiclesFreqFilterTerm"
+                                    placeholder='Type to search...' (change)="page = 1" (ngModelChange)="page = 1" />
+                                <button [disabled]="!vehicleFrequencyList.length" placement="top"
+                                    ngbtooltip="Download as PDF" type="button" (click)="downloadDataAsPdf()"
+                                    class="btn btn-primary mr-1 m-l-10">
+                                    <i class="fa fa-download f-14"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-block row">
+                    <div class="col-sm-12 col-lg-12 col-xl-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">Entry Date</th>
+                                        <th scope="col">Entry Time</th>
+                                        <th scope="col">Gate</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let vehicleFrequencyLists of vehicleFrequencyList | filter: vehiclesFreqFilterTerm | slice: (page-1) * pageSize : page * pageSize"
+                                        [ngClass]="{'rowhighlight' : vehicleFrequencyLists.id == selectedEventData.id}">
+
+                                        <td class="warning"
+                                            style="font-weight: 800;cursor: default;background-color: rgb(166, 209, 247);"
+                                            colspan="3"
+                                            *ngIf="vehicleFrequencyLists.groupBy != undefined && vehicleFrequencyLists.vehicleDetails != undefined">
+                                            <span class="fw-800">Vehicle Number :
+                                            </span>{{commonUIComponent.vehicleNumberFormatter(vehicleFrequencyLists.groupBy)}}
+                                            <span class="fw-800">, Type :
+                                            </span>{{commonUIComponent.removeUnderscores(vehicleFrequencyLists.vehicleType)}}
+                                            <span class="fw-800">, Owner Name :
+                                            </span>{{vehicleFrequencyLists.vehicleDetails.ownerName}}
+                                        </td>
+                                        <td class="warning"
+                                            style="font-weight: 800;cursor: default;background-color: rgb(166, 209, 247);"
+                                            colspan="4"
+                                            *ngIf="vehicleFrequencyLists.groupBy != undefined && vehicleFrequencyLists.vehicleDetails == undefined">
+                                            <span class="fw-800">Vehicle Number :
+                                            </span>{{commonUIComponent.vehicleNumberFormatter(vehicleFrequencyLists.groupBy)}}
+                                            <span class="fw-800">, Type :
+                                            </span>{{commonUIComponent.removeUnderscores(vehicleFrequencyLists.vehicleType)}}
+                                        </td>
+                                        <td *ngIf="vehicleFrequencyLists.groupBy == undefined">
+                                            {{vehicleFrequencyLists.vehicleEntryDate}}
+                                        </td>
+                                        <td *ngIf="vehicleFrequencyLists.groupBy == undefined">
+                                            {{vehicleFrequencyLists.vehicleEntryTime}}
+                                        </td>
+                                        <td *ngIf="vehicleFrequencyLists.groupBy == undefined">
+                                            {{vehicleFrequencyLists.gate.gateName}}
+                                        </td>
+                                        <td *ngIf="vehicleFrequencyLists.groupBy == undefined">
+                                            <button *ngIf="vehicleFrequencyLists.imagePath" placement="top"
+                                                ngbTooltip="View snapshot" type="button"
+                                                class="btn btn-primary btn-xs btn-pill btn-air-primary m-r-5"
+                                                (click)="openSnapshotModal(snapshotContenet, vehicleFrequencyLists.imagePath, vehicleFrequencyLists.vehicleNumber, vehicleFrequencyLists.vehicleType)">
+                                                <i class="fa fa-image f-22"></i>
+                                            </button>                                            
+                                        </td>
+                                        <td class="warning"
+                                            style="font-weight: 800;cursor: default;background-color: rgb(166, 209, 247);"
+                                            colspan="1"
+                                            *ngIf="vehicleFrequencyLists.groupBy != undefined">
+                                            <button style="margin-right: 70px;" *ngIf="vehicleFrequencyLists.vehicleDetails == undefined"
+                                                placement="top" ngbTooltip="Add to white list" type="button"
+                                                class="btn btn-warning btn-xs btn-pill btn-air-primary m-r-5"
+                                                (click)="openAddtoWhiteListModal(addToWhiteListContenet, vehicleFrequencyLists)">
+                                                <i class="fa fa-plus f-22"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr class="NoDataAvailable" *ngIf="!vehicleFrequencyList.length">
+                                        <td colspan="4" class="text-center">No Data Found.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="pagination-top p-2" *ngIf="vehicleFrequencyList.length">
+                                    <ngb-pagination [collectionSize]="vehicleFrequencyList.length" [pageSize]="pageSize"
+                                        [(page)]="page" [maxSize]="5" [rotate]="true" [boundaryLinks]="true">
+                                    </ngb-pagination>
+                                </div>
+                            </div>
+                            <div class="col-md-4 m-t-15 ">
+                                <span *ngIf="selectedDate.fromDate && selectedDate.toDate" class="f-14"><span
+                                        class="f-w-600">From:</span>
+                                    {{selectedDate.fromDate}} <span class="f-w-600">To:</span>
+                                    {{selectedDate.toDate}}</span>
+                            </div>
+                            <div class="col-md-4" *ngIf="vehicleFrequencyList.length">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                    </div>
+                                    <div class="col-sm-6 m-t-5">
+                                        <label>Page Size</label>
+                                        <select class="m-l-20 form-control displayInline" style="width: 50%;"
+                                            [disabled]="!vehicleFrequencyList.length" [(ngModel)]="pageSize">
+                                            <option value="" disabled>-- Select --</option>
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                            <option value="15">15</option>
+                                            <option value="20">20</option>
+                                            <option value="25">25</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Details modal -->
+<ng-template #addToWhiteListContenet let-c="close" let-d="dismiss">
+    <div class="modal-header bg-primary">
+        <h4 class="modal-title" id="modal-basic-title">Add To White List</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <div class="card">
+                    <form class="needs-validation" (ngSubmit)="onSubmit()" novalidate>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Vehicle Number <span class="text-danger"> * </span></label>
+                                        <input type="text" class="form-control" placeholder="Enter the number"
+                                            [formControl]="vehicleWhiteListForm.controls['vehicleNumber']"
+                                            [(ngModel)]="selectedEventData.vehicleNumber" required>
+                                        <div *ngIf="vehicleWhiteListForm.controls.vehicleNumber.touched && vehicleWhiteListForm.controls.vehicleNumber.errors?.required"
+                                            class="text text-danger">
+                                            Vehicle Number is required.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Vehicle Type <span class="text-danger"> * </span></label>
+                                        <select class="form-control" [formControl]="vehicleWhiteListForm.controls['vehicleType']"
+                                            [(ngModel)]="selectedEventData.vehicleType" required>
+                                            <option value="" disabled>-- Select type --</option>
+                                            <option value="UNKNOWN">Unknown</option>
+                                            <option value="MOTORCYCLE">Motorcycle</option>
+                                            <option value="SUV">SUV</option>
+                                            <option value="SEDAN">Sedan</option>
+                                            <option value="AUTO">Auto</option>
+                                            <option value="PICKUP_TRUCK">Pickup Truck</option>
+                                            <option value="BIG_TRUCK">Big Truck</option>
+                                            <option value="VAN">Van</option>
+                                            <option value="BUS">Bus</option>
+                                        </select>
+                                        <div *ngIf="vehicleWhiteListForm.controls.vehicleType.touched && vehicleWhiteListForm.controls.vehicleType.errors?.required"
+                                            class="text text-danger">
+                                            Vehicle type is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label>Owner Name</label>
+                                        <input type="text" class="form-control" placeholder="Enter the owner name"
+                                            [formControl]="vehicleWhiteListForm.controls['ownerName']"
+                                            [(ngModel)]="selectedEventData.ownerName">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label>Address</label>
+                                        <input type="text" class="form-control" placeholder="Enter the address"
+                                            [formControl]="vehicleWhiteListForm.controls['address']"
+                                            [(ngModel)]="selectedEventData.address">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Category<span class="text-danger"> * </span></label>
+                                        <select class="form-control"
+                                            [formControl]="vehicleWhiteListForm.controls['vehicleCategory']"
+                                            [(ngModel)]="selectedEventData.vehicleCategory" required>
+                                            <option value="" disabled>-- Select category --</option>
+                                            <option value="UNKNOWN">Unknown</option>
+                                            <option value="GOVERNMENT">Government</option>
+                                            <option value="PRIVATE">Private</option>
+                                        </select>
+                                        <div *ngIf="vehicleWhiteListForm.controls.vehicleCategory.touched && vehicleWhiteListForm.controls.vehicleCategory.errors?.required"
+                                            class="text text-danger">
+                                            Category is required.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Listing Type<span class="text-danger"> * </span></label>
+                                        <select class="form-control"
+                                            [formControl]="vehicleWhiteListForm.controls['vehicleListingType']"
+                                            [(ngModel)]="selectedEventData.vehicleListingType" required>
+                                            <option value="" disabled>-- Select listing type --</option>
+                                            <option value="WHITE_LISTED">White List</option>
+                                            <option value="BLACK_LISTED">Black List</option>
+                                        </select>
+                                        <div *ngIf="vehicleWhiteListForm.controls.vehicleListingType.touched && vehicleWhiteListForm.controls.vehicleListingType.errors?.required"
+                                            class="text text-danger">
+                                            Listing type is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button [disabled]="!vehicleWhiteListForm.valid" type="submit"
+                                class="btn btn-primary mr-1">Submit</button>
+                            <input type="reset" class="btn btn-light" value="Reset" (click)="onResetForm()">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<!-- View snapshot modal -->
+<ng-template #snapshotContenet let-c="close" let-d="dismiss">
+    <div class="modal-header bg-primary">
+        <h4 class="modal-title" id="modal-basic-title">
+            {{commonUIComponent.vehicleNumberFormatter(selectedVehicleInfo.vehicleNumber)}}
+            - {{commonUIComponent.removeUnderscores(selectedVehicleInfo.vehicleType)}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row" style="align-items: center;justify-content: center;">
+            <div class="shadow-sm shadow-showcase p-20 snapshot-image">
+                <img [src]="selectedVehicleInfo.snapshotPath" alt="snapshot-image" width="100%" height="15%"
+                    draggable="false" />
+            </div>
+        </div>
+    </div>
+</ng-template>

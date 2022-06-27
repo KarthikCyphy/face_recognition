@@ -1,0 +1,102 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-lg-8 col-xl-8">
+            <div class="card">
+                <div class="card-header card-header-border">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <h5>Light Controllers</h5>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="pull-right right-header">
+                            <input type='text' class="filter-ngx form-control" [(ngModel)]="filterTerm" placeholder='Type to search...'
+                            />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <div class="card-block row">
+                    <div class="col-sm-12 col-lg-12 col-xl-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">IP Address</th>
+                                        <th scope="col">Port</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let lightListDatas of lightListData | filter: filterTerm"
+                                        [ngClass] = "{'rowhighlight' : lightListDatas.id == lightData.id}">
+                                        <td (click)="onRowClicked(lightListDatas)">{{lightListDatas.ipAddress}}</td>
+                                        <td (click)="onRowClicked(lightListDatas)">{{lightListDatas.port}}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary btn-xs btn-pill btn-air-primary" (click)="onDeleteLight(lightListDatas.id)"><i placement="top" ngbtooltip="Delete" class="fa fa-trash-o f-22"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr class="NoDataAvailable" *ngIf="!lightListData.length">
+                                        <td colspan="3" class="text-center">No Data Found.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-lg-4 col-xl-4 lightControllerPage">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Light Controller {{typeOfForm}}</h5>
+                </div>
+                <form class="needs-validation" (ngSubmit)="onSubmit()" novalidate>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>IP Address <span class="text-danger"> * </span></label>
+                                    <input type="text" class="form-control" placeholder="Enter the IP Address"
+                                        [formControl]="lightForm.controls['ipAddress']" [(ngModel)]="lightData.ipAddress"
+                                        required>
+                                        <!-- (keypress)="ipCheckKeypress($event)" (keyup)="ipCheckKeyup($event)" required> -->
+                                    <div *ngIf="lightForm.controls.ipAddress.touched && lightForm.controls.ipAddress.errors?.required"
+                                        class="text text-danger">
+                                        IP Address is required.
+                                    </div>
+                                    <!-- <div *ngIf="showInvalidIP" class="text text-danger">
+                                        Please provide a valid IP Address.
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Port <span class="text-danger"> * </span></label>
+                                    <input type="text" class="form-control" placeholder="Enter the port"
+                                        [formControl]="lightForm.controls['port']" [(ngModel)]="lightData.port"
+                                        (keypress)="numericalFilter($event)" maxlength="4" required>
+                                    <div *ngIf="lightForm.controls.port.touched && lightForm.controls.port.errors?.required"
+                                        class="text text-danger">
+                                        Port is required.
+                                    </div>
+                                    <div
+                                        *ngIf="lightForm.controls.port.touched && lightForm.controls.port.errors?.pattern"
+                                        class="text text-danger">
+                                        Please provide a valid port.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button [disabled]="!lightForm.valid" type="submit"
+                            class="btn btn-primary mr-1">Submit</button>
+                        <input type="reset" class="btn btn-light" value="Cancel" (click)="onResetForm()">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

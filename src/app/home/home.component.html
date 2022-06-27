@@ -1,0 +1,160 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-lg-12 col-xl-12">
+            <div class="card">
+                <div class="card-header card-header-border">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Vehicle Movement</h5>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <label>Page Size</label>
+                            <select class="m-l-30 form-control displayInline" style="width: 13%;" [(ngModel)]="pageSize">
+                                <option value="" disabled>-- Select --</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="25">25</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="p-2 animate-chk">
+                                <div class="row">
+                                    <div class="">
+                                        <label class="d-inline p-l-10" for="todays">
+                                            <input class="radio_animated" id="todays" value="todays"
+                                                (click)="onClickTypeChange('todays')" [(ngModel)]="selectedTypeofList"
+                                                type="radio" name="rdo-ani" checked>
+                                            Today's
+                                        </label>
+                                        <label class="d-inline p-l-10" for="byDate" (click)="showDatepicker = true">
+                                            <input class="radio_animated" id="byDate"
+                                                (click)="onClickTypeChange('byDate')" value="byDate"
+                                                [(ngModel)]="selectedTypeofList" type="radio" name="rdo-ani">
+                                            By date <span class="badge badge-info"><i
+                                                    class="icofont icofont-calendar"></i></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>                            
+                        </div>
+                        <div class="col-sm-4 m-t-10">
+                            <span *ngIf="selectedDate.fromDate && selectedDate.toDate" class="f-14"><span
+                                    class="f-w-600">From:</span> {{selectedDate.fromDate}} <span
+                                    class="f-w-600">To:</span> {{selectedDate.toDate}}</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="pull-right right-header">
+                                <input type='text' class="filter-ngx form-control" [(ngModel)]="filterTerm" placeholder='Type to search...' (change)="page = 1" (ngModelChange)="page = 1"/>
+                                <button [disabled]="!vehicleMovementList.length" placement="top" ngbtooltip="Download as PDF" type="button" (click)="downloadDataAsPdf()" class="btn btn-primary mr-1 m-l-10">
+                                    <i class="fa fa-download f-14"></i>                  
+                                </button> 
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body"
+                                *ngIf="selectedTypeofList == 'byDate' && showDatepicker">
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <div class="form-group">
+                                            <label class="col-form-label">From date & time</label>
+                                            <app-date-time-picker [(ngModel)]="fromDate"></app-date-time-picker>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <div class="form-group">
+                                            <label class="col-form-label">To date & time</label>
+                                            <app-date-time-picker [(ngModel)]="toDate"></app-date-time-picker>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 p-t-5 m-t-30">
+                                        <button type="button" (click)="onDateTimeModified()" class="btn btn-primary mr-1 m-l-10">Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-block row">
+                    <div class="col-sm-12 col-lg-12 col-xl-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="thead-dark">
+                                    <tr>                                        
+                                        <th scope="col">Gate</th>
+                                        <th scope="col">Number</th>
+                                        <th scope="col">Owner Name</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Date & Time</th>
+                                        <th scope="col">Verification Type</th>
+                                        <th scope="col">Entry Status</th>
+                                        <th scope="col">Listing Type</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let vehicleMovementLists of vehicleMovementList | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize">
+                                        <td>{{vehicleMovementLists.gate.gateName}}</td>
+                                        <td class="f-w-600">
+                                            {{commonUIComponent.vehicleNumberFormatter(vehicleMovementLists.vehicleNumber)}}
+                                        </td>
+                                        <td>
+                                            {{vehicleMovementLists.vehicleDetails != undefined ? commonUIComponent.removeUnderscores(vehicleMovementLists.vehicleDetails.ownerName) : ''}}
+                                        <td>
+                                            {{commonUIComponent.removeUnderscores(vehicleMovementLists.vehicleType)}}
+                                        </td>
+                                        <td>{{vehicleMovementLists.vehicleEntryDate}} {{vehicleMovementLists.vehicleEntryTime}}</td>
+                                        <td>{{commonUIComponent.removeUnderscores(vehicleMovementLists.gate.vehicleVerificationType)}}</td>
+                                        <td>{{commonUIComponent.enumModifier(vehicleMovementLists.vehicleEntryStatus)}}
+                                        </td>
+                                        <td [ngStyle]="{'color' : vehicleMovementLists.vehicleListingType == 'WHITE_LISTED' || vehicleMovementLists.vehicleListingType == 'GOVERNMENT_VEHICLE'? '#5ff3ba' : vehicleMovementLists.vehicleListingType == 'NONE' ? '#ffb84d' : '#000000'}"
+                                            style="font-weight: 700;">
+                                            {{commonUIComponent.removeUnderscores(vehicleMovementLists.vehicleListingType)}}
+                                        </td>
+                                        <td>
+                                            <button *ngIf="vehicleMovementLists.imagePath" placement="top"
+                                                ngbtooltip="snapshot" type="button"
+                                                class="btn btn-primary btn-xs btn-pill btn-air-primary m-r-5"
+                                                (click)="openSnapshotModal(snapshotContenet, vehicleMovementLists.imagePath)">
+                                                <i class="fa fa-image f-22"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr class="NoDataAvailable" *ngIf="!vehicleMovementList.length">
+                                        <td colspan="7" class="text-center">No Data Found.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pagination-top p-2" *ngIf="vehicleMovementList.length">
+                            <ngb-pagination [collectionSize]="vehicleMovementList.length" [pageSize]="pageSize"
+                                [(page)]="page" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View snapshot modal -->
+<ng-template #snapshotContenet let-c="close" let-d="dismiss">
+    <div class="modal-header bg-primary">
+        <h4 class="modal-title" id="modal-basic-title">{{selectedVehicleInfo.vehicleNumber}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row" style="align-items: center;justify-content: center;">
+            <div class="shadow-sm shadow-showcase p-20 snapshot-image">
+                <img [src]="selectedVehicleInfo.imagePath" alt="snapshot-image" width="100%" height="15%"
+                    draggable="false" />
+            </div>
+        </div>
+    </div>
+</ng-template>

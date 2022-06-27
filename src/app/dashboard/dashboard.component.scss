@@ -1,0 +1,101 @@
+.dashboard-container{
+    height: 50%;
+    padding: 5px;
+    .card{
+    // height: calc(100vh - 550px);
+    height: 100%;
+        .card-header{
+            color: #4466f2;
+        }
+    }
+} 
+
+:fullscreen {
+    .modal-body .card{
+        height: auto !important;
+    }
+}
+.new-users .media{
+    margin-bottom: 5px !important;
+    margin-right: 5px !important;
+    .gradient-round{
+        position: relative;
+        width: 30px;
+        height: 30px;
+        border-radius: 100%;
+        text-align: center;
+        font-size: 18px;
+        border: 2px solid;        
+    }
+    .pull-right span{
+        margin-top: 4px !important;
+    }
+}
+
+.whiteList{
+    background-image: linear-gradient(#40bf80, #5ff3ba);
+    border-color: silver !important;
+    color: #ffffff;
+}
+
+.blackList{
+    background-image: linear-gradient(#000203, #000000);
+    border-color: silver !important;
+    color: #ffffff;
+}
+
+.redList{
+    background-image: linear-gradient(#ffb84d, #ff9900);
+    border-color: silver !important;
+    color: #ffffff;
+}
+.notAllowedList{
+    background-image: linear-gradient(#ff6666, #ec4b4b);
+    border-color: silver !important;
+    color: #ffffff;
+}
+.video-container {
+    // padding: 7% 0; 
+}
+:fullscreen {
+    .video-container{
+        // padding: 5% 0;
+    }
+
+    .cameraLivestream{
+        width: 100%;
+        height: calc(100vh - 795px);
+    }
+    
+    @media screen and (max-width: 1660px) {
+        .cameraLivestream{
+            width: 100%;
+            height: calc(100vh - 665px);
+        }
+    }
+}
+
+.cameraLivestream{
+    width: 100%;
+    height: calc(100vh - 730px);
+}
+
+@media screen and (max-width: 1660px) {
+    .cameraLivestream{
+        width: 100%;
+        height: calc(100vh - 600px);
+    }
+}
+
+h6.countsInfo{
+    font-size: 12px;
+    margin-bottom: 2px !important;
+}
+
+.snapshot-image{
+    
+}
+
+.modal-body .card{
+    height: auto;
+}

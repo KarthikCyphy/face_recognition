@@ -1,0 +1,199 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-lg-8 col-xl-8">
+            <div class="card">
+                <div class="card-header card-header-border">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <h5>Cameras</h5>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="pull-right right-header">
+                            <input type='text' class="filter-ngx form-control" [(ngModel)]="filterTerm" placeholder='Type to search...'
+                            />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <div class="card-block row">
+                    <div class="col-sm-12 col-lg-12 col-xl-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">IP Address</th>
+                                        <th scope="col">RTSP URL</th>
+                                        <th scope="col">Gate</th>
+                                        <th scope="col">Light IP</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let cameraListDatas of cameraListData | filter: filterTerm"
+                                        [ngClass] = "{'rowhighlight' : cameraListDatas.id == cameraData.id}">
+                                        <td (click)="onRowClicked(cameraListDatas)">{{cameraListDatas.cameraId}}</td>
+                                        <td (click)="onRowClicked(cameraListDatas)">{{commonUIComponent.removeUnderscores(cameraListDatas.cameraType)}}</td>
+                                        <td (click)="onRowClicked(cameraListDatas)">{{cameraListDatas.cameraIp}}</td>
+                                        <td (click)="onRowClicked(cameraListDatas)">{{cameraListDatas.cameraRtspURL}}</td>
+                                        <td (click)="onRowClicked(cameraListDatas)">{{cameraListDatas.gate.gateName}}</td>
+                                        <td (click)="onRowClicked(cameraListDatas)">{{cameraListDatas.lightController == null ? 'Unassigned' : cameraListDatas.lightController.ipAddress}}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary btn-xs btn-pill btn-air-primary" (click)="onDeleteCamera(cameraListDatas.id)"><i placement="top" ngbtooltip="Delete" class="fa fa-trash-o f-22"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr class="NoDataAvailable" *ngIf="!cameraListData.length">
+                                        <td colspan="7" class="text-center">No Data Found.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-lg-4 col-xl-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Camera {{typeOfForm}}</h5>
+                </div>
+                <form class="needs-validation" (ngSubmit)="onSubmit()" novalidate>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Camera name <span class="text-danger"> * </span></label>
+                                    <input type="text" class="form-control" placeholder="Enter the name"
+                                        [formControl]="cameraForm.controls['cameraId']" [(ngModel)]="cameraData.cameraId"
+                                        required>
+                                    <div *ngIf="cameraForm.controls.cameraId.touched && cameraForm.controls.cameraId.errors?.required"
+                                        class="text text-danger">
+                                        Name is required.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Camera Type<span class="text-danger"> * </span></label>
+                                    <select class="form-control" [formControl]="cameraForm.controls['cameraType']"
+                                        [(ngModel)]="cameraData.cameraType" required>
+                                        <option value="" disabled>-- Select type --</option>
+                                        <option value="FR_CAMERA">FR Camera</option>
+                                        <option value="ANPR_CAMERA">ANPR Camera</option>
+                                    </select>
+                                    <div *ngIf="cameraForm.controls.cameraType.touched && cameraForm.controls.cameraType.errors?.required"
+                                        class="text text-danger">
+                                        Type is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>User name <span class="text-danger"> * </span></label>
+                                    <input type="text" class="form-control" placeholder="Enter the user name"
+                                        [formControl]="cameraForm.controls['cameraUserName']" [(ngModel)]="cameraData.cameraUserName"
+                                        required>
+                                    <div *ngIf="cameraForm.controls.cameraUserName.touched && cameraForm.controls.cameraUserName.errors?.required"
+                                        class="text text-danger">
+                                        User name is required.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Password <span class="text-danger"> * </span></label>
+                                    <input type="password" class="form-control" placeholder="Enter the password"
+                                        [formControl]="cameraForm.controls['cameraPassword']" [(ngModel)]="cameraData.cameraPassword"
+                                        required>
+                                    <div *ngIf="cameraForm.controls.cameraPassword.touched && cameraForm.controls.cameraPassword.errors?.required"
+                                        class="text text-danger">
+                                        Password is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>IP Address <span class="text-danger"> * </span></label>
+                                    <input type="text" class="form-control" placeholder="Enter the IP Address"
+                                        [formControl]="cameraForm.controls['cameraIp']" [(ngModel)]="cameraData.cameraIp"
+                                        required>
+                                    <div *ngIf="cameraForm.controls.cameraIp.touched && cameraForm.controls.cameraIp.errors?.required"
+                                        class="text text-danger">
+                                        IP Address is required.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Port <span class="text-danger"> * </span></label>
+                                    <input type="text" class="form-control" placeholder="Enter the port"
+                                        [formControl]="cameraForm.controls['cameraPort']" [(ngModel)]="cameraData.cameraPort"
+                                        required>
+                                    <div *ngIf="cameraForm.controls.cameraPort.touched && cameraForm.controls.cameraPort.errors?.required"
+                                        class="text text-danger">
+                                        Port is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>RTSP URL <span class="text-danger"> * </span></label>
+                                    <input type="text" class="form-control" placeholder="Enter the URL"
+                                        [formControl]="cameraForm.controls['cameraRtspURL']" [(ngModel)]="cameraData.cameraRtspURL"
+                                        required>
+                                    <div *ngIf="cameraForm.controls.cameraRtspURL.touched && cameraForm.controls.cameraRtspURL.errors?.required"
+                                        class="text text-danger">
+                                        RTSP URL is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                        <div class="row">                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Select Gate<span class="text-danger"> * </span></label>
+                                    <select class="form-control" [formControl]="cameraForm.controls['gateId']"
+                                        [(ngModel)]="cameraData.gateId" required>
+                                        <option value="" disabled>-- Select gate --</option>
+                                        <option *ngFor="let gateList of gateListData" [ngValue]="gateList.id">{{gateList.gateName}}</option>
+                                    </select>
+                                    <div *ngIf="cameraForm.controls.gateId.touched && cameraForm.controls.gateId.errors?.required"
+                                        class="text text-danger">
+                                        Gate is required.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Select Light</label>
+                                    <select class="form-control"
+                                        [(ngModel)]="cameraData.lightControllerId">
+                                        <option value="" disabled>-- Select light --</option>
+                                        <option value="null">Unassigned</option>
+                                        <option *ngFor="let lightList of lightControllerListData" [ngValue]="lightList.id">{{lightList.ipAddress}}</option>
+                                    </select>
+                                    <!-- <div *ngIf="cameraForm.controls.lightControllerId.touched && cameraForm.controls.lightControllerId.errors?.required"
+                                        class="text text-danger">
+                                        Light is required.
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button [disabled]="!cameraForm.valid" type="submit"
+                            class="btn btn-primary mr-1">Submit</button>
+                        <input type="reset" class="btn btn-light" value="Cancel" (click)="onResetForm()">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

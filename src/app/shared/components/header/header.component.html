@@ -1,0 +1,102 @@
+<!-- Page Header Start-->
+<div class="page-main-header admin-header" [ngClass]="{'open' : navServices.collapseSidebar}" id="page-main-header">
+  <div class="main-header-right row">
+    <!-- <div class="main-header-left d-lg-none">
+      <div class="logo-wrapper"><a href="javascript:void(0)"><img src="assets/images/endless-logo.png" alt=""></a></div>
+    </div> -->    
+    <div class="header-logo">
+      <img class="logo_1" src="assets/images/logo/greater_chennai_police_transparent.png" alt="header-user">
+      <img class="img-70" src="assets/images/logo/tn_police_logo_transparent.png" alt="header-user">
+    </div>
+    <div class="header-title">
+      <h2 class="p-t-10">Vehicle Monitoring System</h2>
+    </div>
+    <div class="mobile-sidebar" *ngIf="authService.userData.roles[0] == 'Admin'">
+      <div class="media-body text-right switch-sm">
+        <label class="switch">
+          <a href="javascript:void(0)" (click)="collapseSidebar()">
+            <app-feather-icons id="sidebar-toggle" [icon]="'align-left'"></app-feather-icons>
+          </a>
+        </label>
+      </div>
+    </div>
+    <div class="nav-right col">
+      <ul class="nav-menus" [ngClass]="{'open' : openNav}">        
+        <li>
+          <form class="form-inline search-form">
+            <div class="form-group">
+              <input class="form-control-plaintext" [class.open]="isOpenMobile" [(ngModel)]="text"
+                [ngModelOptions]="{standalone: true}" (keyup)="searchTerm(text)" type="text" autocomplete="off"
+                placeholder="Search Vehicle">
+              <span class="d-sm-none mobile-search">
+                <app-feather-icons [icon]="'search'" (click)="isOpenMobile=!isOpenMobile"></app-feather-icons>
+              </span>
+              <span class="clear-search">
+                <app-feather-icons [icon]="'x'" (click)="clearSearch()"></app-feather-icons>
+              </span>
+            </div>
+          </form>
+        </li>
+        <li>
+          <label class="f-left f-w-600">CONVOY</label>
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="customSwitch1" [checked]="convoyStatus == 'CONVOY_STARTED'" (change)="changeConvoyStatus(convoyStatus)">
+            <label class="custom-control-label" for="customSwitch1">{{convoyStatus == 'CONVOY_STARTED' ? 'ON' : 'OFF'}}</label>
+          </div>
+        </li>
+        <li>
+          <a href="javascript:void(0)" class="text-dark" (click)="toggleFullScreen()">
+            <app-feather-icons [icon]="'maximize'"></app-feather-icons>
+          </a>
+        </li>
+        <li>
+          <h6>{{ authService.userData.userName }}</h6>
+        </li>
+        <li class="onhover-dropdown">
+          <div class="media align-items-center" *ngIf="!authService.userData as user"><img
+              class="align-self-center pull-right img-50 rounded-circle" src="assets/images/user/user.png"
+              alt="header-user">
+            <!-- <div class="dotted-animation"><span class="animate-circle"></span><span class="main-circle"></span></div> -->
+          </div>
+          <div class="media align-items-center" *ngIf="authService.userData as user"><img
+              class="align-self-center pull-right img-50 rounded-circle"
+              [src]="user.userImage ==null ? 'assets/images/user/user.png' : user.userImage" alt="header-user">
+            <!-- <div class="dotted-animation"><span class="animate-circle"></span><span class="main-circle"></span></div> -->
+          </div>
+          <ul class="profile-dropdown onhover-show-div p-20">
+            <li><a href="javascript:void(0)">
+                <app-feather-icons [icon]="'user'"></app-feather-icons>Edit Profile
+              </a>
+            </li>
+            <li (click)="openChangePasswordModal(content)"><a href="javascript:void(0)">
+              <app-feather-icons [icon]="'key'"></app-feather-icons>Change Password              
+              </a>
+              <ng-template #content let-c="close" let-d="dismiss">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="modal-basic-title">Change Password</h4>
+                  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>Hello, World!</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">Save</button>
+                </div>
+              </ng-template>
+            </li>
+            <li><a href="javascript:void(0)" (click)="authService.logout()">
+                <app-feather-icons [icon]="'log-out'"></app-feather-icons>Logout
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <div class="d-lg-none mobile-toggle pull-right" (click)="openMobileNav()">
+        <app-feather-icons [icon]="'more-horizontal'"></app-feather-icons>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Page Header Ends -->

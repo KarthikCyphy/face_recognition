@@ -1,0 +1,55 @@
+<div class="page-wrapper">
+	<div class="auth-bg">
+		<div class="row">
+			<div class="col-xs-12 col-lg-6 col-md-6">
+						
+			</div>
+			<div class="col-xs-12 col-lg-6 col-md-6">
+				<div class="authentication-box m-t-20">
+					<div class="text-center">
+						<img class="client-logo" src="assets/images/logo/greater_chennai_police_transparent.png" alt="">
+						<img class="client-logo" src="assets/images/logo/tn_police_logo_transparent.png" alt="">
+					</div>
+					<h2 class="title p-2">Vehicle Monitoring System</h2>
+				</div>		
+				<div class="authentication-box">			
+					<div class="card mt-4">
+						<div class="card-body">
+							<div class="text-center">
+								<h4>LOGIN</h4>
+							</div>
+							<form class="theme-form" [formGroup]="loginForm" *ngIf="!newUser">
+								<div class="form-group">
+									<label class="col-form-label pt-0"><i class="icofont icofont-user-male"></i> Username</label>
+									<input class="form-control" type="text" placeholder="Enter username" name="loginId" autocomplete="off" formControlName="loginId" [(ngModel)]="loginData.loginId">
+									<div *ngIf="loginForm.controls.loginId.touched && loginForm.controls.loginId.errors?.required"
+										class="text text-danger mt-1">
+										Username is required
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-form-label"> <i class="icofont icofont-key"></i> Password</label>
+									<input class="form-control" type="password" placeholder="Enter password" onpaste="return false;" name="password" autocomplete="off" formControlName="password" type="password" [(ngModel)]="loginData.password">
+									<div *ngIf="loginForm.controls.password.touched && loginForm.controls.password.errors?.required"
+										class="text text-danger mt-1">
+										Password is required
+									</div>
+								</div>
+								<div class="p-0">
+									<!-- <label><a href="javscript:;" (click)="onForgetPassword()">Forget Password ?</a></label> -->
+								</div>
+								<div class="form-group form-row mt-3 mb-0">
+									<button class="btn btn-primary btn-block btn-lg"
+										[class.loader--text]="authService.showLoader"
+										[disabled]="!loginForm.valid || authService.showLoader" (click)="login(loginForm.value)"
+										type="submit"><span>{{ authService.showLoader ? '' : 'Login' }}</span>
+									</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>		
+	</div>
+</div>

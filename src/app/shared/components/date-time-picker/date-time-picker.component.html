@@ -1,0 +1,56 @@
+<div class="input-group mr-2">
+    <input
+    [ngClass]="ngControl?.valid ? 'ng-valid' : 'ng-invalid'"
+    class="form-control"
+    placeholder="DD-MM-YYYY HH:MM"
+    (blur)="inputBlur($event)"
+    [ngModel]="dateString | date:inputDatetimeFormat"
+    (change)="onInputChange($event)"
+    [disabled]="disabled"
+    readonly
+  />
+
+    <div class="input-group-append">
+        <button
+      class="btn btn-outline-secondary"
+      [ngbPopover]="calendarContent"
+      [disabled]="disabled"
+      type="button"
+    >
+      <i class="icofont icofont-calendar"></i>
+    </button>
+    </div>
+</div>
+
+<ng-template #calendarContent>
+    <div>
+        <div *ngIf="!showTimePickerToggle">
+            <ngb-datepicker id="dp" #dp name="datepicker" [ngModel]="datetime"
+                (ngModelChange)="onDateChange($event, dp)"></ngb-datepicker>
+            <button
+        class="btn btn-block btn-outline-secondary"
+        [disabled]="!datetime?.day"
+        [ngbPopover]="timePickerContent"
+        type="button"
+        (click)="toggleDateTimeState($event)"
+      >
+        <i class="icofont icofont-clock-time"></i>
+      </button>
+        </div>
+        <div *ngIf="showTimePickerToggle">
+            <button
+        class="btn btn-block btn-outline-secondary"
+        [ngbPopover]="calendarContent"
+        type="button"
+        (click)="toggleDateTimeState($event)"
+      >
+        <i class="icofont icofont-calendar"></i>
+      </button>
+            <div class="mt-auto">
+                <ngb-timepicker #tp name="timepicker" [ngModel]="datetime" (ngModelChange)="onTimeChange($event)"
+                 [hourStep]="hourStep" [minuteStep]="minuteStep" [secondStep]="secondStep">
+                </ngb-timepicker>
+            </div>
+        </div>
+    </div>
+</ng-template>

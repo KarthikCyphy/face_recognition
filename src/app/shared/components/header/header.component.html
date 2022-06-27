@@ -9,7 +9,7 @@
       <img class="img-70" src="assets/images/logo/tn_police_logo_transparent.png" alt="header-user">
     </div>
     <div class="header-title">
-      <h2 class="p-t-10">Vehicle Monitoring System</h2>
+      <h2 class="p-t-10">Face Recognition</h2>
     </div>
     <div class="mobile-sidebar" *ngIf="authService.userData.roles[0] == 'Admin'">
       <div class="media-body text-right switch-sm">
@@ -22,7 +22,7 @@
     </div>
     <div class="nav-right col">
       <ul class="nav-menus" [ngClass]="{'open' : openNav}">        
-        <li>
+        <!-- <li>
           <form class="form-inline search-form">
             <div class="form-group">
               <input class="form-control-plaintext" [class.open]="isOpenMobile" [(ngModel)]="text"
@@ -43,7 +43,7 @@
             <input type="checkbox" class="custom-control-input" id="customSwitch1" [checked]="convoyStatus == 'CONVOY_STARTED'" (change)="changeConvoyStatus(convoyStatus)">
             <label class="custom-control-label" for="customSwitch1">{{convoyStatus == 'CONVOY_STARTED' ? 'ON' : 'OFF'}}</label>
           </div>
-        </li>
+        </li> -->
         <li>
           <a href="javascript:void(0)" class="text-dark" (click)="toggleFullScreen()">
             <app-feather-icons [icon]="'maximize'"></app-feather-icons>

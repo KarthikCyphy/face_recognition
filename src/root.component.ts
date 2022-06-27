@@ -9,7 +9,7 @@ import { LoaderService } from './app-core/services/loader.service';
 })
 export class RootComponent implements OnInit, OnDestroy {
 
-  title = 'Vehicle Monitoring System';
+  title = 'Face Recognition';
   componentSubscriptions: Subscription = new Subscription();
 
   constructor(

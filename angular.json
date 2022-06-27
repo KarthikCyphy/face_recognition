@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "vehiclemonitoringsystem": {
+    "facerecognition": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -37,7 +37,7 @@
               "@tweenjs/tween.js",              
               "angular-calendar/date-adapters/date-fns"
             ],
-            "outputPath": "dist/vehiclemonitoringsystem",
+            "outputPath": "dist/facerecognition",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -91,18 +91,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "vehiclemonitoringsystem:build"
+            "browserTarget": "facerecognition:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "vehiclemonitoringsystem:build:production"
+              "browserTarget": "facerecognition:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "vehiclemonitoringsystem:build"
+            "browserTarget": "facerecognition:build"
           }
         },
         "test": {
@@ -136,7 +136,7 @@
         }
       }
     },
-    "vehiclemonitoringsystem-e2e": {
+    "facerecognition-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -145,11 +145,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "vehiclemonitoringsystem:serve"
+            "devServerTarget": "facerecognition:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "vehiclemonitoringsystem:serve:production"
+              "devServerTarget": "facerecognition:serve:production"
             }
           }
         },
@@ -165,7 +165,7 @@
       }
     }
   },
-  "defaultProject": "vehiclemonitoringsystem",
+  "defaultProject": "facerecognition",
   "cli": {
     "analytics": false
   }

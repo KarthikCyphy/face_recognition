@@ -183,6 +183,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    return;
     this.httpService.post('vvadmin/getallcameras', {"requestParams" : {}}).subscribe(
       async (response: any) => {
         if(await response.success){

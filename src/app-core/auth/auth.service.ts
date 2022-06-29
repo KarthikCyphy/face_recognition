@@ -77,7 +77,7 @@ export class AuthService {
 
     if(postData.loginId == 'admin' && postData.password == 'admin@123'){
       result.returnObject['userName'] = 'Admin';  result.returnObject['roles'] = [ "Admin" ];
-      this.afterLogin(result,'home');
+      this.afterLogin(result,'dashboard');
     }else if(postData.loginId == 'operator' && postData.password == 'operator@123'){
       result.returnObject['userName'] = 'Operator';
       result.returnObject['roles'] = [ "Operator" ];

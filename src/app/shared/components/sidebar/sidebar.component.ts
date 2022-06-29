@@ -22,17 +22,17 @@ export class SidebarComponent {
     ) {
     this.navServices.items.subscribe(menuItems => {
       this.menuItems = menuItems
-      switch(authService.userData.roles[0]){
-        case 'Admin':
-          this.menuItems.forEach((value,key) => {
-            if(value.path != undefined && value.path.includes('/dashboard'))
-              this.menuItems.splice(key, 1);
-          });          
-          break;
-        case 'Operator':
-          this.menuItems = [this.menuItems[0]];
-          break;
-      }
+      // switch(authService.userData.roles[0]){
+      //   case 'Admin':
+      //     this.menuItems.forEach((value,key) => {
+      //       if(value.path != undefined && value.path.includes('/dashboard'))
+      //         this.menuItems.splice(key, 1);
+      //     });          
+      //     break;
+      //   case 'Operator':
+      //     this.menuItems = [this.menuItems[0]];
+      //     break;
+      // }
       this.router.events.subscribe((event) => {
         if (event instanceof NavigationEnd) {
           menuItems.filter(items => {

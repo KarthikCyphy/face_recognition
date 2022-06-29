@@ -39,13 +39,13 @@ export class NavService {
 
 	MENUITEMS: Menu[] = [
 		{
-			path: '/app/dashboard', title: 'Dashboard', type: 'link', icon: 'home', active: false, 
+			path: '/app/dashboard', title: 'Dashboard', type: 'link', icon: 'home', active: true, 
 		},
 		{
 			path: '/app/enrolment', title: 'Person Enrolment', type: 'link', icon: 'user', active: false, 
 		},
 		{
-			path: '/app/liveview', title: 'Live view', type: 'link', icon: 'airplay', active: true,
+			path: '/app/liveview', title: 'Live view', type: 'link', icon: 'airplay', active: false,
 		},
 		{
 			path: '/app/offline', title: 'Offline', type: 'link', icon: 'upload', active: false, 

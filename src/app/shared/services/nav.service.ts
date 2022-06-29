@@ -42,24 +42,13 @@ export class NavService {
 			path: '/app/dashboard', title: 'Dashboard', type: 'link', icon: 'home', active: false, 
 		},
 		{
-			path: '/app/home', title: 'Home', type: 'link', icon: 'home', active: false, 
+			path: '/app/enrolment', title: 'Person Enrolment', type: 'link', icon: 'user', active: false, 
 		},
 		{
-			path: '/app/gate', title: 'Gates', type: 'link', icon: 'airplay', active: true,
+			path: '/app/liveview', title: 'Live view', type: 'link', icon: 'airplay', active: true,
 		},
 		{
-			path: '/app/light', title: 'Light Controllers', type: 'link', icon: 'zap', active: false, 
-		},
-		{
-			path: '/app/camera', title: 'Cameras', type: 'link', icon: 'camera', active: false, 
-		},		
-		{
-			path: '/app/vehicles', title: 'Vehicles', type: 'link', icon: 'truck', active: false, 
-		},		
-		{
-			title: 'Reports', icon: 'bar-chart-2', type: 'sub', active: false, children: [
-				{ path: '/app/reports', title: 'Frequency Reports', type: 'link' },
-			]
+			path: '/app/offline', title: 'Offline', type: 'link', icon: 'upload', active: false, 
 		},
 	]
 

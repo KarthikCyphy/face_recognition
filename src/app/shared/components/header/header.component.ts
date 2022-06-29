@@ -28,7 +28,6 @@ export class HeaderComponent implements OnInit {
   public text: string;
   public elem;
   public isOpenMobile: boolean = false
-  public convoyStatus: string;
   public currentTimeStatus: any;
 
   lightListData: any = [];
@@ -76,30 +75,9 @@ export class HeaderComponent implements OnInit {
      this.menuItems = [];
     let items = [];
     term = term.toLowerCase();
-    if(this.authService.userData.roles[0] == 'Admin' && this.router.url != '/app/vehicles'){
-      this.ngZone.run(() => {
-        this.router.navigate(['/app/vehicles']);
-      });
-    }
+    
     if(term.length >= 3){
-      this.httpService.post('vvadmin/searchvehicle', { "requestParams" : this.commonUIComponent.rawVehicleNumberFormatte(term) }).subscribe(
-        async ( response: any) => {
-          if(await response.success){ 
-            this.removeFix();
-            if(response.success && response.returnObject){
-              let data = {
-                'returnObject': response.returnObject,
-                'searchKey' : term
-              }
-              this.commonUIComponent.sendGlobalSearch(data);
-            }else
-              this.toastService.error('Data not found.');
-          }
-          this.loaderService.hide();
-        },
-        (error) => { //error() callback
-          this.httpService.serverErrorMethod(error);
-      });
+      
     }else{
       this.removeFix();
       this.commonUIComponent.sendGlobalSearch({});
@@ -161,26 +139,6 @@ export class HeaderComponent implements OnInit {
       this.navServices.collapseSidebar = true;
     else
       this.navServices.collapseSidebar = false;
-    
-    this.httpService.post('vvverification/ilpr/wh/getconvoystatus', { "requestParams": {} }).subscribe(
-      async ( response: any) => {
-        if(await response.success)
-          this.convoyStatus = response.returnObject;        
-        this.loaderService.hide();
-      },
-      (error) => { //error() callback
-        this.httpService.serverErrorMethod(error);
-    });
-
-    this.httpService.post('vvadmin/getalllightcontrollers', {"requestParams" : {}}).subscribe(
-      async ( response: any) => {
-        if(await response.success)
-          this.lightListData = response.returnObject;
-        this.loaderService.hide();
-      },
-      (error) => { //error() callback
-        this.httpService.serverErrorMethod(error);
-    });
 
     if(this.currentTimeStatus == undefined){
       this.currentTimeStatus = setInterval(() => {
@@ -196,38 +154,6 @@ export class HeaderComponent implements OnInit {
       if(window.location.hash.includes('app/dashboard') || window.location.hash.includes('app/home'))
         window.location.reload();
     }    
-  }
-
-  changeConvoyStatus(convoyStatus) {
-    let url = convoyStatus == 'CONVOY_STARTED' ? 'stopconvoy' : 'startconvoy';
-    let lightURL = convoyStatus == 'CONVOY_STARTED' ? 'sendsignaloff' : 'sendsignalwithbuzzeron';
-    this.httpService.post('vvverification/ilpr/wh/'+ url, { "requestParams": {} }).subscribe(
-      async ( response: any) => {
-        if(await response.success)
-          this.convoyStatus = response.returnObject;      
-        this.loaderService.hide();
-      },
-      (error) => { //error() callback
-        this.httpService.serverErrorMethod(error);
-    });
-    this.triggerLightAPI(lightURL);
-  }
-
-  triggerLightAPI(lightURL: string) {
-    this.lightListData.forEach((value) => {
-      let inputData = {
-        "ipaddress" : value.ipAddress,
-        "port": value.port,
-        "signalName": 'yellow'
-      }
-      this.httpService.post('vvlightcontroller/' + lightURL, { "requestParams": inputData }).subscribe(
-        (response: any) => {
-          // this.loaderService.hide();
-        },
-        (error) => { //error() callback
-          // this.httpService.serverErrorMethod(error);
-      });   
-    });    
   }
 
   toggleFullScreen() {

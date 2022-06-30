@@ -10,13 +10,11 @@ import { ToastrModule } from 'ngx-toastr';
 import { CommonUiService } from 'src/app-core/services/common-ui.service';
 import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import { PersonEnrolmentComponent } from './person-endrolment/person-enrolment/person-enrolment.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    PersonEnrolmentComponent,
   ],
   imports: [
     CommonModule,

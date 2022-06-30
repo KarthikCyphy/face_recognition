@@ -7,7 +7,7 @@ export const content: Routes = [
   },
   {
     path: 'enrolment',
-    loadChildren: () => import('../../person-endrolment/person-enrolment.module').then(m => m.PersonEnrolmentModule)
+    loadChildren: () => import('../../person-enrolment/person-enrolment.module').then(m => m.PersonEnrolmentModule)
   }
 
 ];

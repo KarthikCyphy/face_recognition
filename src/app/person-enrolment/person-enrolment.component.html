@@ -1,0 +1,213 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-lg-12 col-xl-12">
+            <div class="card">
+                <div class="card-header card-header-border">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <h5>Person Enrolment List</h5>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="pull-right right-header">
+                            <input type='text' class="filter-ngx form-control" [(ngModel)]="enrolmentFilterTerm" (change)="page = 1" (ngModelChange)="page = 1"
+                                  placeholder='Type to search...' />
+                            <button placement="top" ngbTooltip="Add Person" (click)="openViewEnrolmentFormModal(enrolmentFormContenet, {})"
+                                type="button"  class="btn-sm btn-md btn-primary ml-3">
+                                <i class="fa fa-plus f-22"></i>
+                            </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <div class="card-block row">
+                    <div class="col-sm-12 col-lg-12 col-xl-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">Enrol.No</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Phone Number</th>
+                                        <th scope="col">Address</th>
+                                        <th scope="col">DOB</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let enrolmentListDatas of enrolmentListData | filter : enrolmentFilterTerm | slice: (page-1) * pageSize : page * pageSize">
+                                        <td>{{enrolmentListDatas.regNumber}}</td>
+                                        <td>{{enrolmentListDatas.name | uppercase}}</td>
+                                        <td>{{enrolmentListDatas.phoneNumber}}</td>
+                                        <td>{{enrolmentListDatas.address}}</td>
+                                        <td>{{enrolmentListDatas.registeredOn}}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary btn-xs btn-pill btn-air-primary m-r-5" (click)="onDeleteSupplier(enrolmentListDatas.id)"><i placement="top" ngbtooltip="Delete" class="fa fa-trash-o f-22"></i></button>
+                                            <button type="button" class="btn btn-primary btn-xs btn-pill btn-air-primary m-r-5" (click)="onRowClicked(enrolmentListDatas.id)"><i placement="top" ngbtooltip="Edit" class="fa fa-edit f-22"></i></button>
+                                            <button type="button" class="btn btn-primary btn-xs btn-pill btn-air-primary m-r-5" (click)="openGenerateQRcodeModal(generateQRcodeContenet,enrolmentListDatas)"><i placement="top" ngbtooltip="Generate QR Code" class="fa fa-qrcode f-22"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr class="NoDataAvailable" *ngIf="!enrolmentListData.length">
+                                        <td colspan="6" class="text-center">No Data Found.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pagination-top p-2" *ngIf="enrolmentListData.length">
+                            <ngb-pagination [collectionSize]="enrolmentListData.length" [pageSize]="pageSize" [(page)]="page"
+                              [maxSize]="5" [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add or View suppliers-form data -->
+<ng-template #enrolmentFormContenet let-c="close" let-d="dismiss">
+    <div class="modal-header bg-primary">
+      <h4 class="modal-title" id="modal-basic-title">Person Details</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form class="theme-form mega-form" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Name <span class="text-danger"> * </span></label>
+                                <input type="text" class="form-control" placeholder="Enter the name"
+                                    [formControl]="enrolmentForm.controls['name']" maxlength="20" [(ngModel)]="enrolmentData.name"
+                                    required>
+                                <div *ngIf="enrolmentForm.controls.name.touched && enrolmentForm.controls.name.errors?.required"
+                                    class="text text-danger">
+                                    Name is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Phone Number <span class="text-danger"> * </span></label>
+                                <input type="text" class="form-control digit" placeholder="Enter phone number"
+                                    (keypress)="numericalFilter($event)" maxlength="10" [formControl]="enrolmentForm.controls['phoneNumber']"
+                                    [(ngModel)]="enrolmentData.phoneNumber" required>                                  
+                                <div
+                                    *ngIf="enrolmentForm.controls.phoneNumber.touched && enrolmentForm.controls.phoneNumber.errors?.pattern"
+                                    class="text text-danger">
+                                    Please provide a valid phone number.
+                                </div>
+                                <div *ngIf="enrolmentForm.controls.phoneNumber.touched && enrolmentForm.controls.phoneNumber.errors?.required"
+                                    class="text text-danger">
+                                    Phone numbe is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Address <span class="text-danger"> * </span></label>
+                                <input type="text" class="form-control" placeholder="Enter the address"
+                                    [formControl]="enrolmentForm.controls['address']" maxlength="15"
+                                    [(ngModel)]="enrolmentData.address" required>
+                                <div *ngIf="enrolmentForm.controls.address.touched && enrolmentForm.controls.address.errors?.required"
+                                    class="text text-danger">
+                                    Address is required.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Gender <span class="text-danger"> * </span></label>
+                                <div class="form-group m-t-15 m-checkbox-inline mb-0 custom-radio-ml">
+                                    <div class="radio radio-primary">
+                                        <input type="radio" name="radioGender" id="radioinline4" value="MALE"
+                                        [(ngModel)]="enrolmentData.gender">
+                                        <label for="radioinline4" class="mb-0">Male</label>
+                                    </div>
+                                    <div class="radio radio-primary">
+                                        <input type="radio" name="radioGender" id="radioinline5" value="FEMALE"
+                                        [(ngModel)]="enrolmentData.gender">
+                                        <label for="radioinline5" class="mb-0">Female</label>
+                                    </div>
+                                    <div class="radio radio-primary">
+                                        <input type="radio" name="radioGender" id="radioinline6" value="OTHERS"
+                                        [(ngModel)]="enrolmentData.gender">
+                                        <label for="radioinline6" class="mb-0">Other's</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>DOB</label>
+                                <form class="form-inline custom-datepicker custom-datepicker-dropdown">
+                                    <div class="form-group mb-0">
+                                      <div class="input-group">
+                                        <input class="form-control" placeholder="dd-mm-yyyy" name="dp" [(ngModel)]="enrolmentData.dob" ngbDatepicker
+                                          [footerTemplate]="footerTemplate" #f="ngbDatepicker">
+                                        <div class="input-group-append">
+                                          <button class="btn calendar" (click)="f.toggle()" type="button"><i
+                                              class="fa fa-calendar"></i></button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 text-center">
+                    <div class="col-auto">
+                        <img alt="" width="150px" [src]="imageUrl" draggable="false">
+                    </div>
+                    <div class="col-auto m-t-20 image-btn">
+                        <input #file accept="image/*" type="file" (change)="upload(file.files[0])" style="visibility: hidden;">
+                        <button type="button" class="btn btn-success btn-sm btn-pill btn-air-success m-r-5" (click)="file.click()"><i class="icofont icofont-upload-alt f-22"></i></button>
+                        <button type="button" class="btn btn-danger btn-sm btn-pill btn-air-danger m-r-5" (click)="openWebcameraModal(webCameraContenet)"><i class="f-22 icofont icofont-camera-alt"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button [disabled]="!enrolmentForm.valid" type="submit"
+                class="btn btn-primary mr-1">Submit</button>
+            <input type="reset" class="btn btn-light" value="Reset" (click)="onResetForm()">
+        </div>      
+    </form>
+</ng-template>
+
+<ng-template #webCameraContenet let-c="close" let-d="dismiss">
+    <div class="modal-header bg-primary">
+      <h4 class="modal-title" id="modal-basic-title">Take Photo</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <webcam [height]="400" [width]="400" [trigger]="triggerObservable"
+                    (imageCapture)="handleImage($event)">
+                </webcam>
+                <button class="btn btn-primary btn-sm btn-pill btn-air-primary m-r-5" (click)="triggerSnapshot();">
+                    <i placement="top" ngbtooltip="Click Me"  class="fa fa-camera f-22"></i>
+                </button>
+            </div>
+            <div class="col-md-6 text-center" *ngIf="webcamImage">
+                <h2>Here is your image!</h2>
+                <img width="100%" style="padding: inherit;" [src]="webcamImage.imageAsDataUrl"/>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button [disabled]="!webcamImage" type="button"
+            class="btn btn-primary mr-1" (click)="toUseTakenImage(webcamImage.imageAsDataUrl)">Use this</button>
+        <input type="reset" class="btn btn-light" value="Reset" (click)="webcamImage = null">
+    </div> 
+</ng-template>
+
+<!-- Open web camera  -->

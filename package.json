@@ -59,6 +59,7 @@
     "ngx-countdown-timer": "^0.1.9",
     "ngx-spinner": "^8.1.0",
     "ngx-toastr": "^12.0.0",
+    "ngx-webcam": "^0.4.1",
     "rxjs": "~6.6.3",
     "rxjs-compat": "~6.5.5",
     "sass": "^1.29.0",

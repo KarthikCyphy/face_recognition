@@ -71,15 +71,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.MENUITEMS = [      
       {
-        path: '/app/home', title: 'Home', type: 'link', icon: 'home', active: false, 
+        path: '/app/enrolment', title: 'Person Endrolment', type: 'link', icon: 'user', active: false, 
       },
     ]
-    navService.items = new BehaviorSubject<Menu[]>(this.MENUITEMS);
+    // navService.items = new BehaviorSubject<Menu[]>(this.MENUITEMS);  
 
-    if(authService.userData.roles[0] == 'Admin'){
-      this.toastService.error('Unauthorised page access.');
-      authService.forceLogout();
-    }
+    // if(authService.userData.roles[0] == 'Admin'){
+    //   this.toastService.error('Unauthorised page access.');
+    //   authService.forceLogout();
+    // }
 
     config.size = 'sm';
     config.boundaryLinks = true;

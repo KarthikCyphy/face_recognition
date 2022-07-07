@@ -45,7 +45,7 @@ export class NavService {
 			path: '/app/liveview', title: 'Live view', type: 'link', icon: 'airplay', active: false,
 		},
 		{
-			path: '/app/offline', title: 'Offline', type: 'link', icon: 'upload', active: false, 
+			path: '/app/offline-search', title: 'Offline', type: 'link', icon: 'upload', active: false, 
 		},
 		{
 			path: '/app/enrolment', title: 'Person Enrolment', type: 'link', icon: 'user', active: false, 

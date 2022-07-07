@@ -7,7 +7,11 @@ export const content: Routes = [
   },
   {
     path: 'enrolment',
-    loadChildren: () => import('../../person-enrolment/person-enrolment.module').then(m => m.PersonEnrolmentModule)
+    loadChildren: () => import('../../person-enrolment/person-enrolment.module').then(m => m.PersonEnrolmentModule),
+  },
+  {
+    path: 'offline-search',
+    loadChildren: () => import('../../offline-search/offline-search.module').then(m => m.OfflineSearchModule),
   }
 
 ];

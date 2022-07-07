@@ -110,7 +110,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   dashboardDataList: any = [];
   selectedEventData: any = {};
   vehicleInfoForm: FormGroup;
-  vehicleVerifyData: any = {"vvHistoryIdPk":'', "remarks":"", 'lightIp': "", "lightPort": ""};
+  vehicleVerifyData: any = {};
   gateMapObject = new Map();
   gateMapCount = new Map();
   

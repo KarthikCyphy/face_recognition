@@ -1,1 +1,111 @@
-<p>offline-search works!</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-lg-12 col-xl-12">
+            <div class="card">
+                <div class="card-header card-header-border">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <h5>Offline Search video List</h5>
+                      </div>    
+                      <div class="col-sm-6">
+                        <div class="pull-right right-header">
+                            <input type='text' class="filter-ngx form-control" [(ngModel)]="offlineFilterTerm" (change)="page = 1" (ngModelChange)="page = 1"
+                                  placeholder='Type to search...' />
+                            <button placement="top" ngbTooltip="Process Video" (click)="openViewOfflineFormModal(offlineFormContent, {})"
+                                type="button"  class="btn-sm btn-md btn-primary ml-3">
+                                <i class="fa fa-plus f-22"></i>
+                            </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <div class="card-block row">
+                    <div class="col-sm-12 col-lg-12 col-xl-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">Enrol.No</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Phone Number</th>
+                                        <th scope="col">Address</th>
+                                        <th scope="col">DOB</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let offlineListDatas of offlineListData | filter : offlineFilterTerm | slice: (page-1) * pageSize : page * pageSize">
+                                        <td>{{offlineListDatas.regNumber}}</td>
+                                        <td>{{offlineListDatas.name | uppercase}}</td>
+                                        <td>{{offlineListDatas.phoneNumber}}</td>
+                                        <td>{{offlineListDatas.address}}</td>
+                                        <td>{{offlineListDatas.registeredOn}}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary btn-xs btn-pill btn-air-primary m-r-5" (click)="onDeleteSupplier(offlineListDatas.id)"><i placement="top" ngbtooltip="Delete" class="fa fa-trash-o f-22"></i></button>
+                                            <button type="button" class="btn btn-primary btn-xs btn-pill btn-air-primary m-r-5" (click)="onRowClicked(offlineListDatas.id)"><i placement="top" ngbtooltip="Edit" class="fa fa-edit f-22"></i></button>
+                                            <button type="button" class="btn btn-primary btn-xs btn-pill btn-air-primary m-r-5" (click)="openGenerateQRcodeModal(generateQRcodeContenet,offlineListDatas)"><i placement="top" ngbtooltip="Generate QR Code" class="fa fa-qrcode f-22"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr class="NoDataAvailable" *ngIf="!offlineListData.length">
+                                        <td colspan="6" class="text-center">No Data Found.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pagination-top p-2" *ngIf="offlineListData.length">
+                            <ngb-pagination [collectionSize]="offlineListData.length" [pageSize]="pageSize" [(page)]="page"
+                              [maxSize]="5" [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add or View suppliers-form data -->
+<ng-template #offlineFormContent let-c="close" let-d="dismiss">
+    <div class="modal-header bg-primary">
+      <h4 class="modal-title" id="modal-basic-title">Suspect Search</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form class="theme-form mega-form" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Upload Video File</label>
+                        <div class="col-sm-9">
+                            <input type="file" class="form-control" accept="video/mp4,video/x-m4v,video/*">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="checkbox">
+                        <input id="checkbox3" type="checkbox" [(ngModel)]="isSpecificSuspect">
+                        <label for="checkbox3">If any specific suspect</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row" *ngIf="isSpecificSuspect">
+                <div class="col-md-9">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Upload suspect image</label>
+                        <div class="col-sm-9">
+                            <input type="file" class="form-control" accept="image/*">
+                        </div>
+                    </div>
+                </div>                    
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button [disabled]="!offlineForm.valid" type="submit"
+                class="btn btn-primary mr-1">Submit</button>
+            <input type="reset" class="btn btn-light" value="Reset" (click)="onResetForm()">
+        </div>      
+    </form>
+</ng-template>

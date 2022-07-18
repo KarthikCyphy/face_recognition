@@ -1,3 +1,4 @@
+import { OfflineSearchComponent } from './offline-search.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -9,7 +10,7 @@ import { SharedModule } from '../shared/shared.module';
 import { WebcamModule } from 'ngx-webcam';
 
 @NgModule({
-  declarations: [],
+  declarations: [OfflineSearchComponent],
   imports: [
     CommonModule,
     OfflineSearchRoutingModule,

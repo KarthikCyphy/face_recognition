@@ -158,5 +158,12 @@ export class PersonEnrolmentComponent implements OnInit {
     this.webCameraContenet.close();
   }
 
-
+  numericalFilter(event: any) {
+    const reg = /^-?\d*(\\d{0,2})?$/;
+    let input = event.target.value + String.fromCharCode(event.charCode);
+ 
+    if (!reg.test(input)) {
+      event.preventDefault();
+    }
+  }
 }

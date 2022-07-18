@@ -20,7 +20,7 @@ export class CommonUiService {
   }
 
   isEmptyObject(obj: object) {
-    return (obj && (Object.keys(obj).length === 0));
+    return (obj && (Object.keys(obj).length === 0));    
   }
 
   rawVehicleNumberFormatte(vehicleNumber: string){
